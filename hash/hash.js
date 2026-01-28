@@ -4,18 +4,12 @@ import { LinkedList } from "../linked-list/script.js";
 
 class HashMap {
     #capacity = 16;
-    #load_size = 0.75;
+    #load_factor = 0.75;
     constructor() {
         this.map = new Array(this.#capacity);
     }
 
-    createMap() {
-        for (let i = 0; i < this.#capacity; i++) {
-            this.map[i] = new LinkedList();
-        }
-    }
-
-    getLoadSize = () => this.#load_size;
+    getLoadSize = () => this.#load_factor;
     getCapacity = () => this.#capacity;
 
     hash(str) {
@@ -29,7 +23,17 @@ class HashMap {
         return hashCode;
     }
 
-    // TODO: Check for full capacity/load size
+    #checkCapacity() {
+        let map = this.map;
+        if (this.length() > Math.floor(this.#capacity * this.#load_factor)) {
+            this.#capacity = this.#capacity * 2;
+            this.map = new Array(this.#capacity);
+            map.forEach((item, i) => {
+                if (map[i]) this.map[i] = item;
+            });
+        }
+    }
+
     set(key, val) {
         let hash = this.hash(key);
         let node = [key, val];
@@ -39,6 +43,7 @@ class HashMap {
 
         if (!this.has(key)) {
             this.map[hash].append(node);
+            this.#checkCapacity();
             return;
         }
 
@@ -50,6 +55,7 @@ class HashMap {
             }
             root = root.nextNode;
         }
+
     }
 
     #getNodes(index) {
@@ -73,12 +79,20 @@ class HashMap {
         }
     }
 
-    has(key) {
-        return !!this.get(key);
-    }
-
     remove(key) {
+        let index = this.hash(key);
+        if (!this.map[index]) return;
 
+        let node = this.map[index].root;
+        while (node !== null) {
+            if (node.nextNode.value[0] === key) {
+                if (node.nextNode.nextNode) node.nextNode = node.nextNode.nextNode;
+                else node.nextNode = null;
+                return true;
+            }
+            node = node.nextNode;
+        }
+        return false;
     }
 
     length() {
@@ -95,13 +109,9 @@ class HashMap {
         }
     }
 
-    keys() {
-        return this.entries().map((k) => k[0]);
-    }
-
-    values() {
-        return this.entries().map((v) => v[1]);
-    }
+    has = (key) => !!this.get(key);
+    keys = () => this.entries().map((k) => k[0]);
+    values = () => this.entries().map((v) => v[1]);
 
     entries() {
         const values = [];
@@ -112,16 +122,19 @@ class HashMap {
     }
 }
 
-const hash = new HashMap();
-// console.log("Hash:", hash.hash("Nathan"));
-hash.set("Rama", "Lloyd");
-hash.set("Sita", "Bottomsworth");
-hash.set("Sita", "New");
-hash.set("Nathan", "The One And Only");
-hash.set("C", "C-Man");
-hash.set("C", "New C");
-console.log(hash.keys());
-console.log(hash.getLoadSize() * hash.getCapacity(), hash.length());
-// console.log(hash.map[3]);
-// console.log("Hash:", hash.hash("Rama"));
-// console.log("Hash:", hash.hash("Sita"));
+const test = new HashMap();
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+// test.set('lion', 'golden');
+// test.set('moon', 'silver');
+// console.log(test.remove('hat'));
+console.log(test.entries());
