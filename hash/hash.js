@@ -25,11 +25,15 @@ class HashMap {
 
     #checkCapacity() {
         let map = this.map;
-        if (this.length() > Math.floor(this.#capacity * this.#load_factor)) {
+        if (this.length() > Math.round(this.#capacity * this.#load_factor)) {
             this.#capacity = this.#capacity * 2;
             this.map = new Array(this.#capacity);
             map.forEach((item, i) => {
-                if (map[i]) this.map[i] = item;
+                let node = item.root;
+                while (node) {
+                    if (map[i]) this.set(node.value[0], node.value[1]);
+                    node = node.nextNode;
+                }
             });
         }
     }
@@ -55,7 +59,6 @@ class HashMap {
             }
             root = root.nextNode;
         }
-
     }
 
     #getNodes(index) {
@@ -134,7 +137,7 @@ test.set('hat', 'black');
 test.set('ice cream', 'white');
 test.set('jacket', 'blue');
 test.set('kite', 'pink');
-// test.set('lion', 'golden');
-// test.set('moon', 'silver');
-// console.log(test.remove('hat'));
+test.set('lion', 'golden');
+test.set('moon', 'silver');
+console.log(test.length(), test.getCapacity() * test.getLoadSize(), test.map.length);
 console.log(test.entries());
