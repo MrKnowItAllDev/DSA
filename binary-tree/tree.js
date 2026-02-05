@@ -25,13 +25,8 @@ class Tree {
             let current = queue.front();
             if (current.left) queue.enqueue(current.left);
             if (current.right) queue.enqueue(current.right);
-            console.log(current);
             queue.dequeue();
         }
-    }
-
-    traverseDepth() {
-
     }
 
     traversePreorderDepth(root) {
