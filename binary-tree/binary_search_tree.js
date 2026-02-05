@@ -1,5 +1,7 @@
 'use strict';
 
+// @ts-check
+
 import { mergeSort } from "../merge-sort/mergeSort.js";
 import { Queue } from "../Queue/queue.js";
 
@@ -62,35 +64,48 @@ class Tree {
         return null;
     }
 
+    /**
+     * @param {function} callback
+     * @param {object} root
+     * */
     inOrderForEach(callback, root=this.root) {
-        if (!callback || typeof callback !== "function") throw new Error("No callback provided");
-        if (root === null) return null;
-
-        this.inOrderForEach(root.left);
-        callback(root);
-        this.inOrderForEach(root.right);
-
-        return root;
-    }
-
-    preOrderForEach(callback, root=this.root) {
-        if (!callback || typeof callback !== "function") throw new Error("No callback provided");
+        if (!callback) throw new Error("No callback provided");
         if (root === null) return root;
 
-        callback(root);
+        else {
+            this.inOrderForEach(callback, root.left);
+            callback(root.data);
+            this.inOrderForEach(callback, root.right);
+            return root;
+        }
+    }
+
+    /**
+     * @param {function} callback
+     * @param {object} root
+     * */
+    preOrderForEach(callback, root=this.root) {
+        if (!callback) throw new Error("No callback provided");
+        if (root === null) return root;
+
+        callback(root.data);
         this.preOrderForEach(callback, root.left);
         this.preOrderForEach(callback, root.right);
 
         return root;
     }
 
+    /**
+     * @param {function} callback
+     * @param {object} root
+     * */
     postOrderForEach(callback, root=this.root) {
-        if (!callback || typeof callback !== "function") throw new Error("No callback provided");
+        if (!callback) throw new Error("No callback provided");
         if (root === null) return root;
 
         this.postOrderForEach(callback, root.left);
         this.postOrderForEach(callback, root.right);
-        callback(root);
+        callback(root.data);
 
         return root;
     }
@@ -117,6 +132,10 @@ class Tree {
         return [parent, root];
     }
 
+    /**
+     * @param {number} value
+     * @returns {$ObjMap}
+     * */
     deleteItem(value) {
         let root = this.root;
         let prev = root;
@@ -125,8 +144,8 @@ class Tree {
             if ((root.left && root.right) && root.data === value) {
                 let [parent, node] = [...this.getSuccessorNode(root)];
                 root.data = node.data;
-                if (parent.left === node) parent.left = null;
-                else if (parent.right === node) parent.right = null;
+                if (parent.left) parent.left = null;
+                else if (parent.right) parent.right = null;
             }
 
             else if (((root.left && !root.right) || (!root.left && root.right)) && root.data === value) {
@@ -146,11 +165,20 @@ class Tree {
         }
     }
 
-    height(value) {
+    /** @param {number} value */
 
+    height(value) {
+        if (!this.includes(value)) return undefined;
+
+        /** @type {number | undefined} ht */
+        let ht = 0;
     }
 
     depth(value) {
+        if (!this.includes(value)) return undefined;
+
+        /** @type {number | undefined} dpth */
+        let dpth = 0;
 
     }
 
@@ -166,6 +194,4 @@ class Tree {
 const array = [1, 2, 3, 6, 7, 9, 10, 17, 19];
 const tree = new Tree();
 tree.buildBST(array, 0, array.length - 1);
-tree.deleteItem(7);
-console.log("----");
-console.log(tree.root);
+tree.inOrderForEach((val) => console.log(val));
