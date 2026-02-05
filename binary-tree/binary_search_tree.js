@@ -132,8 +132,7 @@ class Tree {
         return [parent, root];
     }
 
-    /**
-     * @param {number} value
+    /**@param {number} value
      * @returns {$ObjMap}
      * */
     deleteItem(value) {
@@ -166,7 +165,6 @@ class Tree {
     }
 
     /** @param {number} value */
-
     height(value) {
         if (!this.includes(value)) return undefined;
 
@@ -177,18 +175,19 @@ class Tree {
     depth(value) {
         if (!this.includes(value)) return undefined;
 
-        /** @type {number | undefined} dpth */
-        let dpth = 0;
-
+        /** @type {$ObjMap | undefined} nodeDepth */
+        let nodeDepth = this.inOrderForEach((val) => {
+            let nodeDepth = 0;
+            while (val !== value) {
+                nodeDepth++;
+            }
+            return nodeDepth;
+        });
     }
 
-    isBalanced() {
+    isBalanced() { }
 
-    }
-
-    rebalance() {
-
-    }
+    rebalance() { }
 }
 
 const array = [1, 2, 3, 6, 7, 9, 10, 17, 19];
