@@ -40,13 +40,10 @@ class HashMap {
 
     set(key, val) {
         let hash = this.hash(key);
-        let node = [key, val];
-        if (!this.map[hash]) {
-            this.map[hash] = new LinkedList();
-        }
+        if (!this.map[hash]) this.map[hash] = new LinkedList();
 
         if (!this.has(key)) {
-            this.map[hash].append(node);
+            this.map[hash].append([key, val]);
             this.#checkCapacity();
             return;
         }
@@ -54,7 +51,7 @@ class HashMap {
         let root = this.map[hash].root;
         while (root !== null) {
             if (root.value[0] === key) {
-                root.value = node;
+                root.value = [key, val];
                 return;
             }
             root = root.nextNode;
