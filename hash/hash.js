@@ -104,9 +104,7 @@ class HashMap {
     }
 
     clear() {
-        for (let j = 0; j < this.#capacity; j++) {
-            this.map[j] = null;
-        }
+        this.map = new Array(this.#capacity);
     }
 
     has = (key) => !!this.get(key);
