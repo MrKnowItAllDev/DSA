@@ -19,10 +19,8 @@ class Tree {
     }
 
     buildBST(array, start, end) {
-        if (start > end) {
-            return null;
-        }
-        array = mergeSort(array);
+        if (start > end) return null;
+
         let mid = Math.round((start + end) / 2);
         let root = new Node(array[mid]);
 
@@ -76,7 +74,6 @@ class Tree {
             this.inOrderForEach(callback, root.left);
             callback(root.data);
             this.inOrderForEach(callback, root.right);
-            return root;
         }
     }
 
@@ -91,8 +88,6 @@ class Tree {
         callback(root.data);
         this.preOrderForEach(callback, root.left);
         this.preOrderForEach(callback, root.right);
-
-        return root;
     }
 
     /**
@@ -106,8 +101,6 @@ class Tree {
         this.postOrderForEach(callback, root.left);
         this.postOrderForEach(callback, root.right);
         callback(root.data);
-
-        return root;
     }
 
     includes = (value) => !!this.breadthFirstTraverse(value);
@@ -132,7 +125,8 @@ class Tree {
         return [parent, root];
     }
 
-    /**@param {number} value
+    /**
+     * @param {number} value
      * @returns {$ObjMap}
      * */
     deleteItem(value) {
@@ -148,13 +142,19 @@ class Tree {
             }
 
             else if (((root.left && !root.right) || (!root.left && root.right)) && root.data === value) {
-                if (root.left) prev.left = root.left;
-                else if (root.right) prev.right = root.right;
+                if (root.left) {
+                    prev.left = root.left;
+                } else if (root.right) {
+                    prev.right = root.right;
+                }
             }
 
             else if ((!root.left && !root.right) && root.data === value) {
-                if (root.data === prev.left.data) prev.left = null;
-                else prev.right = null;
+                if (root.data === prev.left.data) {
+                    prev.left = null;
+                } else {
+                    prev.right = null;
+                }
             }
 
             prev = root;
@@ -164,33 +164,59 @@ class Tree {
         }
     }
 
+    /**
+     * @param {$ObjMap | null} node
+     *  @returns { number | undefined }
+     **/
+    #getHeight(node) {
+        let height = 0;
+        while (node.left) {
+            if (node.left) node = node.left;
+            else node = node.right;
+            height++;
+        }
+        return height;
+    }
+
     /** @param {number} value */
     height(value) {
         if (!this.includes(value)) return undefined;
 
-        /** @type {number | undefined} ht */
-        let ht = 0;
+        let node = this.breadthFirstTraverse(value);
+        return this.#getHeight(node);
     }
 
+    /** @param {number} value */
     depth(value) {
         if (!this.includes(value)) return undefined;
 
-        /** @type {$ObjMap | undefined} nodeDepth */
-        let nodeDepth = this.inOrderForEach((val) => {
-            let nodeDepth = 0;
-            while (val !== value) {
-                nodeDepth++;
-            }
-            return nodeDepth;
-        });
+        let root = this.root, depth = 0;
+        while (root) {
+            if (value < root.data) root = root.left;
+            else if (value > root.data) root = root.right;
+            else return depth;
+            depth++;
+        }
     }
 
-    isBalanced() { }
+    /** @returns {boolean} */
+    isBalanced() {
 
-    rebalance() { }
+    }
+
+    rebalance() {
+        const array = [];
+        this.inOrderForEach((v) => array.push(v));
+        return this.buildBST(array, 0, array.length - 1);
+    }
 }
 
-const array = [1, 2, 3, 6, 7, 9, 10, 17, 19];
+const array = [2, 4, 6, 8, 7, 9, 10, 17, 19, 20, 22];
 const tree = new Tree();
 tree.buildBST(array, 0, array.length - 1);
-tree.inOrderForEach((val) => console.log(val));
+
+// console.log(tree.depth(17));
+console.log(tree.root);
+tree.height(6);
+// tree.deleteItem(20);
+
