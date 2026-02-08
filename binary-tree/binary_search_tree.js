@@ -193,13 +193,12 @@ class Tree {
         }
     }
 
-    /** @returns {boolean | null} */
+    /** @returns {boolean | number} */
     isBalanced(root=this.root, nHeight=-1) {
-        if (!root) return null;
+        if (!root) return nHeight;
 
-        nHeight++;
-        let left = this.isBalanced(root.left, nHeight);
-        let right = this.isBalanced(root.right, nHeight);
+        let left = this.isBalanced(root.left, nHeight++);
+        let right = this.isBalanced(root.right, nHeight++);
 
         return Math.abs(left - right) < 2;
     }
