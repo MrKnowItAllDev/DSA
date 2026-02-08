@@ -142,19 +142,13 @@ class Tree {
             }
 
             else if (((root.left && !root.right) || (!root.left && root.right)) && root.data === value) {
-                if (root.left) {
-                    prev.left = root.left;
-                } else if (root.right) {
-                    prev.right = root.right;
-                }
+                if (root.left) prev.left = root.left;
+                else if (root.right) prev.right = root.right;
             }
 
             else if ((!root.left && !root.right) && root.data === value) {
-                if (root.data === prev.left.data) {
-                    prev.left = null;
-                } else {
-                    prev.right = null;
-                }
+                if (root.data === prev.left.data) prev.left = null;
+                else prev.right = null;
             }
 
             prev = root;
@@ -199,9 +193,15 @@ class Tree {
         }
     }
 
-    /** @returns {boolean} */
-    isBalanced() {
+    /** @returns {boolean | null} */
+    isBalanced(root=this.root, nHeight=-1) {
+        if (!root) return null;
 
+        nHeight++;
+        let left = this.isBalanced(root.left, nHeight);
+        let right = this.isBalanced(root.right, nHeight);
+
+        return Math.abs(left - right) < 2;
     }
 
     rebalance() {
@@ -211,12 +211,14 @@ class Tree {
     }
 }
 
-const array = [2, 4, 6, 8, 7, 9, 10, 17, 19, 20, 22];
+const array = [0, 1, 2, 4, 6, 8, 7, 9, 10, 17, 19, 20, 22];
+const values = [10, 5, 15, 2, 7, 12, 20, 1];
+
 const tree = new Tree();
 tree.buildBST(array, 0, array.length - 1);
-
-// console.log(tree.depth(17));
-console.log(tree.root);
-tree.height(6);
+// console.log(tree.root);
+// console.log(tree.depth());
+// console.log(tree.root);
+console.log(tree.isBalanced());
 // tree.deleteItem(20);
 
