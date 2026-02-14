@@ -27,14 +27,16 @@ function knightMoves(start, end) {
             let pnt = parent[`${vertex[0]}, ${vertex[1]}`];
             shortestPath.unshift(vertex);
 
-            while (pnt) {
+            while (pnt !== null) {
                 if (pnt) {
                     let [x, y] = pnt.split(', ');
                     shortestPath.unshift([+x, +y]);
                 }
                 pnt = parent[pnt];
             }
-            return shortestPath;
+            let moves = shortestPath.length - 1;
+            console.log(`You made it in ${moves} ${ moves > 1 ? 'moves': 'move' }! Here's your path:`);
+            shortestPath.forEach((path) => console.log(path));
         }
         queue.dequeue();
     }
@@ -55,4 +57,4 @@ function getAdjacent(pos) {
     return getDelta(pos).map((e) => [pos[0] + e[0], pos[1] + e[1]]);
 }
 
-console.log(knightMoves([0,0],[4,6]));
+knightMoves([0,0],[2,1]);
