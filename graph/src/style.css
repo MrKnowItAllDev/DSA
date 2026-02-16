@@ -40,7 +40,6 @@ h2 {
     color: #ffffff;
     font-size: 18px;
     font-weight: 600;
-
     &:hover {
         cursor: pointer;
         background-color: #029700;

@@ -36,15 +36,11 @@ export function knightMoves(start, end) {
             }
             let moves = shortestPath.length - 1;
             console.log(`You made it in ${moves} ${ moves > 1 ? 'moves': 'move' }! Here's your path:`);
-<<<<<<< HEAD:graph/src/graph.js
+
             shortestPath.forEach((path) => {
                 console.log(path);
             });
             return shortestPath;
-=======
-            shortestPath.forEach((path) => console.log(path));
-            return;
->>>>>>> 183a20882b933cb11ae23cc4f38f9db2dd920751:graph/graph.js
         }
         queue.dequeue();
     }

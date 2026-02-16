@@ -32,6 +32,7 @@ class UI {
         Array.from(document.querySelectorAll('.grid')).forEach((square) => {
             square.addEventListener('click', (e) => {
                 if (!startSet) {
+
                     id = square.id;
                     startSet = true;
                     Array.from(document.querySelectorAll('.grid')).forEach((square) => {
@@ -43,6 +44,7 @@ class UI {
                     img.src = './chess.png';
                     square.appendChild(img);
                     this.#startHeader().textContent = 'Start: ' + square.id;
+                    document.querySelector('.how-to').textContent = `Now select an end position`;
                 }
                 else {
                     endId = square.id;
@@ -66,6 +68,7 @@ class UI {
 
     static async processPos(start, end) {
         let moves = 0;
+        document.querySelector('.how-to').textContent = `Watch him go!`;
         for (const pos of start) {
             this.highlightEndPos(end);
             this.makeMove(pos, start);
@@ -77,21 +80,22 @@ class UI {
                 document.querySelector(`#s${pos[0]}-${pos[1]}`).innerHTML = ``;
                 this.createGrid();
             }
-
         }
     }
 
-    static makeMove(pos, start) {
-    let grid = document.querySelector(`#s${pos[0]}-${pos[1]}`);
+    static async makeMove(pos, start) {
+        let grid = document.querySelector(`#s${pos[0]}-${pos[1]}`);
+        document.querySelector('.optimal').textContent = `Optimal Position: ${grid.id}`;
+        grid.style.backgroundColor = `#37e1cc`;
+
         if (!grid.innerHTML) {
-            if (pos === start[start.length - 1]) {
-                document.querySelector(`#s${pos[0]}-${pos[1]}`).style.backgroundColor = `#4cdc03`;
-            }
+            if (pos === start[start.length - 1]) document.querySelector(`#s${pos[0]}-${pos[1]}`).style.backgroundColor = `#4cdc03`;
             let img = document.createElement('img');
             img.classList.add('img');
             img.src = `./chess.png`;
             grid.appendChild(img);
         }
+        await this.sleep(1000);
     }
 
     static getCoords() {
