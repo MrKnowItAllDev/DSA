@@ -36,7 +36,9 @@ export function knightMoves(start, end) {
             }
             let moves = shortestPath.length - 1;
             console.log(`You made it in ${moves} ${ moves > 1 ? 'moves': 'move' }! Here's your path:`);
-            shortestPath.forEach((path) => console.log(path));
+            shortestPath.forEach((path) => {
+                console.log(path);
+            });
             return shortestPath;
         }
         queue.dequeue();
