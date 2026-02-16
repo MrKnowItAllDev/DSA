@@ -50,6 +50,7 @@ class UI {
                     if (!endId) {
                         endId = square.id;
                         this.highlightEndPos(endId);
+                        document.querySelector('.how-to').textContent = `Press the Start button!`;
                     }
                 }
             });
