@@ -1,4 +1,4 @@
-
+// I'll fix the webpack/import issue later
 class UI {
     static #body = () => document.querySelector('body');
     static #container = () => document.querySelector('.container');
