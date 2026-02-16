@@ -15,8 +15,10 @@ class UI {
             for (let j = 0; j < 8; j++) {
                 const square = document.createElement('div');
                 square.setAttribute('id', `s${i}-${j}`);
-                if ((i + j) % 2 === 0) square.style.backgroundColor = `#593b1d`;
+
+                if ((i + j) % 2 === 0) square.style.backgroundColor = `#774f2a`;
                 else square.style.backgroundColor = `#f4ecde`;
+
                 square.style.height = `${this.#container().offsetWidth / 8}px`;
                 square.style.width = `${this.#container().offsetHeight / 8}px`;
                 square.classList.add('grid');
@@ -29,16 +31,15 @@ class UI {
         let id;
         let endId;
         let startSet = false;
+        let cpy = Array.from(document.querySelectorAll('.grid'));
         Array.from(document.querySelectorAll('.grid')).forEach((square) => {
             square.addEventListener('click', (e) => {
                 if (!startSet) {
-
                     id = square.id;
                     startSet = true;
                     Array.from(document.querySelectorAll('.grid')).forEach((square) => {
                         if (square.id !== id) square.innerHTML = ``;
                     });
-                    square.classList.add('active');
                     const img = document.createElement('img');
                     img.classList.add('img');
                     img.src = './chess.png';
@@ -49,8 +50,8 @@ class UI {
                 else {
                     if (!endId) {
                         endId = square.id;
-                        this.highlightEndPos(endId);
                         document.querySelector('.how-to').textContent = `Press the Start button!`;
+                        this.highlightEndPos(endId);
                     }
                 }
             });
@@ -77,8 +78,12 @@ class UI {
             this.makeMove(pos, start);
             this.#endHeader().textContent = `Current: s${pos[0]}-${pos[1]}`;
             this.#moveCounter().textContent = `Moves: ${moves++}`;
-            if (pos !== start[start.length - 1]) this.highlightPossibleMoves(pos);
+
+            if (pos !== start[start.length - 1])
+                this.highlightPossibleMoves(pos);
+
             await this.sleep(1500);
+
             if (pos !== start[start.length - 1]) {
                 document.querySelector(`#s${pos[0]}-${pos[1]}`).innerHTML = ``;
                 this.createGrid();
@@ -120,13 +125,8 @@ class UI {
         const paths = getAdjacent(pos);
         Array.from(document.querySelectorAll('.grid')).filter((grid) => {
             paths.forEach((array) => {
-                let gId = grid.id.split('')
-                    .map((i) => +i)
-                    .filter((i) => i > -1);
-
-                if (gId[0] === array[0] && gId[1] === array[1]) {
-                    document.querySelector(`#${grid.id}`).style.backgroundColor = `yellow`;
-                }
+                let gId = grid.id.split('').map((i) => +i).filter((i) => i > -1);
+                if (gId[0] === array[0] && gId[1] === array[1]) document.querySelector(`#${grid.id}`).style.backgroundColor = `#eda356`;
             });
         });
     }
