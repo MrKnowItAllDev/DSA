@@ -47,8 +47,10 @@ class UI {
                     document.querySelector('.how-to').textContent = `Now select an end position`;
                 }
                 else {
-                    endId = square.id;
-                    this.highlightEndPos(endId);
+                    if (!endId) {
+                        endId = square.id;
+                        this.highlightEndPos(endId);
+                    }
                 }
             });
         });
