@@ -97,7 +97,10 @@ class UI {
         grid.style.backgroundColor = `#37e1cc`;
 
         if (!grid.innerHTML) {
-            if (pos === start[start.length - 1]) document.querySelector(`#s${pos[0]}-${pos[1]}`).style.backgroundColor = `#4cdc03`;
+            if (pos === start[start.length - 1]) {
+                document.querySelector('.how-to').textContent = `Shortest path found!`;
+                document.querySelector(`#s${pos[0]}-${pos[1]}`).style.backgroundColor = `#4cdc03`;
+            }
             let img = document.createElement('img');
             img.classList.add('img');
             img.src = `./chess.png`;
