@@ -1,0 +1,12 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "The UI.js file is just a visual representation of the graph traversal algorithm, done with of course, a chessboard and knight.",
+  "main": "ui.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Nathan <lloydnathan397@gmail.com>",
+  "license": "MIT"
+}
