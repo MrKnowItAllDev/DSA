@@ -5,23 +5,22 @@ import { Queue } from "../Queue/queue.js";
 export function knightMoves(start, end) {
     const visited = new Set();
     const parent = new Set();
-    const queue = new Queue();
 
+    const queue = new Queue();
     queue.enqueue(start);
+
     parent[start.toString()] = null;
 
     while (!queue.isEmpty()) {
         let vertex = queue.front();
-
         let shortestPath = [];
-        if (vertex[0] === end[0] && vertex[1] === end[1]) {
+
+        if ((vertex[0] === end[0]) && (vertex[1] === end[1])) {
             let pnt = parent[vertex.toString()];
             shortestPath.unshift(vertex);
+
             while (pnt !== null) {
-                if (pnt) {
-                    let [x, y] = pnt.split(',');
-                    shortestPath.unshift([+x, +y]);
-                }
+                if (pnt) shortestPath.unshift([+pnt.split(',')[0], +pnt.split(',')[1]]);
                 pnt = parent[pnt];
             }
             return shortestPath;
@@ -30,6 +29,7 @@ export function knightMoves(start, end) {
         let adjacent = getAdjacent(vertex);
         let key = vertex.toString();
         visited[key] = key;
+
         for (const v of adjacent) {
             if (!visited[v.toString()]) {
                 visited[v.toString()] = v;
@@ -52,7 +52,7 @@ function getDelta(pos) {
         );
 }
 
-function getAdjacent(pos) {
+export function getAdjacent(pos) {
     return getDelta(pos).map((e) => [pos[0] + e[0], pos[1] + e[1]]);
 }
 
