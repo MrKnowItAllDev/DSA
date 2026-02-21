@@ -63,7 +63,7 @@ class UI {
             let gridId = id.split('').map((i) => +i).filter((i) => i > -1);
             let endPos = endId.split('').map((i) => +i).filter((i) => i >= -1);
             let start = knightMoves(gridId, endPos);
-            this.processPos(start, endId);
+            this.processPos(start, endId).catch((err) => console.log(err));
         });
     }
 
@@ -73,17 +73,16 @@ class UI {
 
     static async processPos(start, end) {
         let moves = 0;
-        document.querySelector('.how-to').textContent = `Watch him go!`;
+        document.querySelector('.how-to').textContent = `Finding shortest path...`;
         for (const pos of start) {
             this.highlightEndPos(end);
             await this.makeMove(pos, start);
-            this.#endHeader().textContent = `Current: s${pos[0]}-${pos[1]}`;
+            this.#endHeader().textContent = `Current: s${pos.toString()}`;
             this.#moveCounter().textContent = `Moves: ${moves++}`;
 
-            if (pos !== start[start.length - 1])
-                this.highlightPossibleMoves(pos);
+            if (pos !== start[start.length - 1]) this.highlightPossibleMoves(pos);
 
-            await this.sleep(500);
+            await this.sleep(700);
 
             if (pos !== start[start.length - 1]) {
                 document.querySelector(`#s${pos[0]}-${pos[1]}`).innerHTML = ``;
@@ -135,9 +134,7 @@ class UI {
         });
     }
 
-    static animateMove() {
-
-    }
+    static animateMove() { }
 }
 
 UI.createGrid();
